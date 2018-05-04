@@ -34,6 +34,7 @@ The first step is to determine the most probable cell from around the robot.
 Using the equation shown below. 
 
 ![Probability of Steps](/assets/probablilityfunction.PNG)
+*Equation 1: Probability [1]*
 
 Where $$\tau$$ is the pheromone amount and $$\eta$$ is the heuristic information. 
 The probability calculated for the the ant, $$k$$, moving to cell $$j$$ from 
@@ -45,6 +46,7 @@ continue to explore new paths. By exploring new paths, the ants
 will be able to adjust dynamically to new obstacles. 
 
 ![Pheromone evaporation](/assets/pheromone.PNG)
+*Equation 2: Evaporation [1]*
 
 Where $$\tau$$ is once again the pheromone amount at a particular cell. And 
 $$\rho$$ 
@@ -55,6 +57,8 @@ as an inverse function of how long the path is. The pheromone
 deposition equation is shown below.
 
 ![Pheromone deposition](/assets/updateStep.PNG)  
+*Equation 3: Deposition [1]*
+
 
 Where $$C$$ is the length of the path found for each ant $$k$$.
 
@@ -72,37 +76,49 @@ section was written in an AntColonyPathPlanner() function. The code flow
 for this loop is shown below. 
 
 ![Code Flow for ACO](/assets/overall.PNG)
+*[1]*
 
 
 To dynamically update the path, the code flow below was used. 
 
 ![Code Flow for dynamic update](/assets/dynamicUpdate.PNG)
+*[1]*
+
 
 # Hardware
 
+To implement this in hardware, we had to update our motion planner to use cells
+instead of nodes. This transferred the most probable cell movement to 
+instructions for each wheel motor. Using odometry, the wheel motions convert
+back into our current state. Taking the current state allows us to once 
+again calculate the most probable step in a loop until the goal cell is reached. 
+
+
 ## Results 
+
+Below are a series of images showing our algorithm working. The blue 
+represents the paths found, and the red path shows the best path found. 
+
+![Working Simulation 1](/assets/bestPath.PNG)
+*[1]*
+![Working Simulation 2](/assets/behindObstacle.PNG)
+*[1]*
+![Working Simulation 3](/assets/workingSearchWithBuffers.PNG)
+*[1]*
+Dynamic updates were also successful in software. We added an add wall 
+button to the GUI and after the robot started to move towards it's goal state a 
+wall was added to the path. Below are pictures of the robot dynamically
+updating it's path to account for a new obstacle. 
+
+![Working Simulation 4](/assets/added wall.PNG)
+
+Finally, here is a video of the robot working in hardware to navigate around
+a wall specified by the environment.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/1tcBV76ae90" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 
 ## Citations
 
 [1] M. Brand, M. Masuda, N. Wehner and Xiao-Hua Yu, "Ant Colony Optimization algorithm for robot path planning," 2010 International Conference On Computer Design and Applications, Qinhuangdao, 2010, pp. V3-436-V3-440. doi: 10.1109/ICCDA.2010.5541300
 
-
-You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
-
-To addsimply add a file in the `_posts` directory that follows the convention `YYYY-MM-DD-name-of-post.ext` and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.
-
-Jekyll also offers powerful support for code snippets:
-
-{% highlight ruby %}
-def print_hi(name)
-  puts "Hi, #{name}"
-end
-print_hi('Tom')
-#=> prints 'Hi, Tom' to STDOUT.
-{% endhighlight %}
-
-Check out the [Jekyll docs][jekyll-docs] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll Talk][jekyll-talk].
-
-[jekyll-docs]: https://jekyllrb.com/docs/home
-[jekyll-gh]:   https://github.com/jekyll/jekyll
-[jekyll-talk]: https://talk.jekyllrb.com/
